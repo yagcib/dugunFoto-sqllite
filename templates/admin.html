@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ settings.site_title }} - Admin Panel</title>
+    <!-- Google Fonts - El Yazısı Fontları -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Caveat', 'Dancing Script', cursive;
+            background: #f5f7fa;
+            padding: 15px; /* 20px'in %75'i */
+            font-size: 12px; /* 16px'in %75'i */
+        }
+
+        .container {
+            max-width: 900px; /* 1200px'in %75'i */
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 23px; /* 30px'in %75'i */
+            border-radius: 11px; /* 15px'in %75'i */
+            margin-bottom: 23px; /* 30px'in %75'i */
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.87rem; /* 2.5rem'in %75'i */
+            font-weight: 700;
+            margin-bottom: 8px; /* 10px'in %75'i */
+            letter-spacing: 0.75px; /* 1px'in %75'i */
+        }
+
+        .header h2 {
+            font-family: 'Caveat', cursive;
+            font-size: 1.12rem; /* 1.5rem'in %75'i */
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(188px, 1fr)); /* 250px'in %75'i */
+            gap: 15px; /* 20px'in %75'i */
+            margin-bottom: 23px; /* 30px'in %75'i */
+        }
+
+        .stat-card {
+            background: white;
+            padding: 19px; /* 25px'in %75'i */
+            border-radius: 11px; /* 15px'in %75'i */
+            box-shadow: 0 4px 11px rgba(0,0,0,0.08); /* %75 oranında */
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.65rem; /* 2.2rem'in %75'i */
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px; /* 10px'in %75'i */
+            font-family: 'Kalam', cursive;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.82rem; /* 1.1rem'in %75'i */
+            font-family: 'Caveat', cursive;
+            font-weight: 500;
+        }
+
+        .actions {
+            background: white;
+            padding: 19px; /* 25px'in %75'i */
+            border-radius: 11px; /* 15px'in %75'i */
+            box-shadow: 0 4px 11px rgba(0,0,0,0.08); /* %75 oranında */
+            margin-bottom: 23px; /* 30px'in %75'i */
+            text-align: center;
+        }
+
+        .settings-section {
+            background: white;
+            padding: 19px; /* 25px'in %75'i */
+            border-radius: 11px; /* 15px'in %75'i */
+            box-shadow: 0 4px 11px rgba(0,0,0,0.08); /* %75 oranında */
+            margin-bottom: 23px; /* 30px'in %75'i */
+        }
+
+        .settings-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); /* 260px'in %75'i */
+            gap: 15px; /* 20px'in %75'i */
+            margin-top: 15px; /* 20px'in %75'i */
+        }
+
+        .form-group {
+            margin-bottom: 11px; /* 15px'in %75'i */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px; /* 8px'in %75'i */
+            font-weight: 600;
+            color: #333;
+            font-family: 'Kalam', cursive;
+            font-size: 0.82rem; /* 1.1rem'in %75'i */
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 9px; /* 12px'in %75'i */
+            border: 2px solid #e0e0e0;
+            border-radius: 6px; /* 8px'in %75'i */
+            font-size: 0.75rem; /* 1rem'in %75'i */
+            transition: border-color 0.3s;
+            font-family: 'Caveat', cursive;
+            font-weight: 500;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px; /* 80px'in %75'i */
+            line-height: 1.5;
+        }
+
+        .emoji-input {
+            font-size: 0.98rem; /* 1.3rem'in %75'i */
+            text-align: center;
+            letter-spacing: 1.5px; /* 2px'in %75'i */
+            background: linear-gradient(45deg, #f8f9fa, #ffffff);
+            border: 2px dashed #dee2e6 !important;
+        }
+
+        .emoji-input:focus {
+            border: 2px dashed #667eea !important;
+            background: linear-gradient(45deg, #f0f2ff, #ffffff);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 9px 19px; /* 12px 25px'in %75'i */
+            border: none;
+            border-radius: 6px; /* 8px'in %75'i */
+            text-decoration: none;
+            display: inline-block;
+            margin: 8px; /* 10px'in %75'i */
+            font-weight: 600;
+            transition: transform 0.3s;
+            cursor: pointer;
+            font-family: 'Kalam', cursive;
+            font-size: 0.75rem; /* 1rem'in %75'i */
+        }
+
+        .btn:hover {
+            transform: translateY(-1.5px); /* -2px'in %75'i */
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #3498db 0%, #85c1e9 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12 0%, #f7dc6f 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #f1948a 100%);
+        }
+
+        .btn-small {
+            padding: 6px 11px; /* 8px 15px'in %75'i */
+            font-size: 0.68rem; /* 0.9rem'in %75'i */
+            margin: 4px; /* 5px'in %75'i */
+        }
+
+        .uploaders-container {
+            background: white;
+            padding: 19px; /* 25px'in %75'i */
+            border-radius: 11px; /* 15px'in %75'i */
+            box-shadow: 0 4px 11px rgba(0,0,0,0.08); /* %75 oranında */
+        }
+
+        .uploader-folder {
+            margin-bottom: 15px; /* 20px'in %75'i */
+            border: 1px solid #e0e0e0;
+            border-radius: 8px; /* 10px'in %75'i */
+            overflow: hidden;
+        }
+
+        .folder-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px; /* 20px'in %75'i */
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .folder-header:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+        }
+
+        .folder-header.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .folder-info {
+            display: flex;
+            align-items: center;
+            gap: 11px; /* 15px'in %75'i */
+        }
+
+        .folder-icon {
+            font-size: 1.12rem; /* 1.5rem'in %75'i */
+            transition: transform 0.3s;
+        }
+
+        .folder-header.active .folder-icon {
+            transform: rotate(90deg);
+        }
+
+        .folder-details {
+            font-size: 0.71rem; /* 0.95rem'in %75'i */
+            opacity: 0.8;
+            font-family: 'Caveat', cursive;
+        }
+
+        .folder-actions {
+            display: flex;
+            gap: 8px; /* 10px'in %75'i */
+        }
+
+        .folder-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .folder-content.expanded {
+            max-height: 750px; /* 1000px'in %75'i */
+        }
+
+        .photos-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .photos-table th,
+        .photos-table td {
+            padding: 9px; /* 12px'in %75'i */
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-family: 'Caveat', cursive;
+            font-size: 0.75rem; /* 1rem'in %75'i */
+        }
+
+        .photos-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+            font-family: 'Kalam', cursive;
+            font-size: 0.82rem; /* 1.1rem'in %75'i */
+        }
+
+        .photos-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 15px; /* 20px'in %75'i */
+            font-family: 'Dancing Script', cursive;
+        }
+
+        h3 {
+            font-size: 1.35rem; /* 1.8rem'in %75'i */
+            color: #333;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 38px; /* 50px'in %75'i */
+            color: #666;
+            font-family: 'Caveat', cursive;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem; /* 4rem'in %75'i */
+            margin-bottom: 15px; /* 20px'in %75'i */
+        }
+
+        .empty-state h3 {
+            font-size: 1.12rem; /* 1.5rem'in %75'i */
+            margin-bottom: 11px; /* 15px'in %75'i */
+        }
+
+        .empty-state p {
+            font-size: 0.82rem; /* 1.1rem'in %75'i */
+        }
+
+        .expand-all-btn {
+            margin-bottom: 15px; /* 20px'in %75'i */
+        }
+
+        .folder-stats {
+            display: flex;
+            gap: 15px; /* 20px'in %75'i */
+            font-size: 0.71rem; /* 0.95rem'in %75'i */
+            font-family: 'Caveat', cursive;
+        }
+
+        .folder-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px; /* 5px'in %75'i */
+        }
+
+        .alert {
+            padding: 11px; /* 15px'in %75'i */
+            border-radius: 8px; /* 10px'in %75'i */
+            margin-bottom: 15px; /* 20px'in %75'i */
+            font-family: 'Kalam', cursive;
+            font-size: 0.75rem; /* 1rem'in %75'i */
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .current-bg-preview {
+            margin-top: 8px; /* 10px'in %75'i */
+            text-align: center;
+        }
+
+        .current-bg-preview p {
+            font-family: 'Caveat', cursive;
+            font-size: 0.75rem; /* 1rem'in %75'i */
+            margin-bottom: 8px; /* 10px'in %75'i */
+        }
+
+        .current-bg-preview img {
+            max-width: 150px; /* 200px'in %75'i */
+            max-height: 75px; /* 100px'in %75'i */
+            border-radius: 6px; /* 8px'in %75'i */
+            border: 2px solid #e0e0e0;
+        }
+
+        small {
+            font-family: 'Caveat', cursive;
+            font-size: 0.68rem; /* 0.9rem'in %75'i */
+        }
+
+        strong {
+            font-family: 'Kalam', cursive;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 11px; /* 15px'in %75'i */
+            }
+
+            .header h1 {
+                font-size: 1.5rem; /* 2rem'in %75'i */
+            }
+
+            .header h2 {
+                font-size: 0.98rem; /* 1.3rem'in %75'i */
+            }
+
+            .folder-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 11px; /* 15px'in %75'i */
+            }
+
+            .folder-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .photos-table {
+                font-size: 0.64rem; /* 0.85rem'in %75'i */
+            }
+
+            .photos-table th,
+            .photos-table td {
+                padding: 6px; /* 8px'in %75'i */
+            }
+
+            .folder-stats {
+                flex-direction: column;
+                gap: 8px; /* 10px'in %75'i */
+            }
+
+            .settings-form {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-number {
+                font-size: 1.35rem; /* 1.8rem'in %75'i */
+            }
+
+            .stat-label {
+                font-size: 0.75rem; /* 1rem'in %75'i */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎭 {{ settings.site_title }}</h1>
+            <h2>Admin Panel - Düğün Fotoğrafları</h2>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Site Ayarları Bölümü -->
+        <div class="settings-section">
+            <h3>⚙️ Site Ayarları</h3>
+            <form method="POST" action="{{ url_for('update_settings') }}" class="settings-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="site_title">📝 Site Başlığı</label>
+                    <input type="text" id="site_title" name="site_title" 
+                           value="{{ settings.site_title }}" 
+                           placeholder="Örn: BYT DIGITAL" required>
+                </div>
+                <div class="form-group">
+                    <label for="site_description">📄 Site Açıklaması (Çok satırlı yazabilirsiniz)</label>
+                    <textarea id="site_description" name="site_description" 
+                              rows="3" 
+                              placeholder="Örn: Anılarınızı Paylaşın&#10;Sevgimizin Tanıkları Olun&#10;Bu Güzel Günde Bizimle Olun">{{ settings.site_description }}</textarea>
+                    <small style="color: #666; font-size: 0.68rem;">💡 İpucu: Enter tuşuyla yeni satıra geçebilirsiniz</small>
+                </div>
+                <div class="form-group">
+                    <label for="site_emoji">😊 Site Emojisi (Birden fazla emoji ekleyebilirsiniz)</label>
+                    <input type="text" id="site_emoji" name="site_emoji" 
+                           class="emoji-input"
+                           value="{{ settings.site_emoji }}" 
+                           placeholder="Örn: 💒❤️💍 veya 🎉🥳💕" maxlength="50">
+                    <small style="color: #666; font-size: 0.68rem;">💡 İpucu: Emojileri yan yana yazabilirsiniz</small>
+                </div>
+                <div class="form-group">
+                    <label for="background_image">🌄 Sayfa Arka Plan Resmi</label>
+                    <input type="file" id="background_image" name="background_image" 
+                           accept="image/*">
+                    <small style="color: #666; font-size: 0.68rem;">💡 Sayfanın genel arka planında görünecek resmi yükleyin</small>
+                    {% if settings.background_image %}
+                        <div class="current-bg-preview">
+                            <p>Mevcut sayfa arka planı:</p>
+                            <img src="/static/{{ settings.background_image }}" alt="Mevcut arka plan">
+                            <br><br>
+                            <a href="{{ url_for('delete_background') }}" class="btn btn-danger btn-small">
+                                🗑️ Sayfa Arka Planını Sil
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="background_opacity">🔍 Sayfa Arka Plan Şeffaflığı</label>
+                    <input type="range" id="background_opacity" name="background_opacity" 
+                           min="0" max="1" step="0.1" 
+                           value="{{ settings.background_opacity }}"
+                           oninput="document.getElementById('opacity-value').textContent = this.value">
+                    <small style="color: #666; font-size: 0.68rem;">Şeffaflık: <span id="opacity-value">{{ settings.background_opacity }}</span></small>
+                </div>
+                <div class="form-group">
+                    <label for="container_background_image">🖼️ Modal (Container) Arka Plan Resmi</label>
+                    <input type="file" id="container_background_image" name="container_background_image" 
+                           accept="image/*">
+                    <small style="color: #666; font-size: 0.68rem;">💡 Yüzen modal kutusunun arka planında görünecek resmi yükleyin</small>
+                    {% if settings.container_background_image %}
+                        <div class="current-bg-preview">
+                            <p>Mevcut modal arka planı:</p>
+                            <img src="/static/{{ settings.container_background_image }}" alt="Mevcut modal arka plan">
+                            <br><br>
+                            <a href="{{ url_for('delete_container_background') }}" class="btn btn-danger btn-small">
+                                🗑️ Modal Arka Planını Sil
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="container_background_opacity">🎭 Modal Arka Plan Şeffaflığı</label>
+                    <input type="range" id="container_background_opacity" name="container_background_opacity" 
+                           min="0" max="1" step="0.1" 
+                           value="{{ settings.container_background_opacity }}"
+                           oninput="document.getElementById('container-opacity-value').textContent = this.value">
+                    <small style="color: #666; font-size: 0.68rem;">Şeffaflık: <span id="container-opacity-value">{{ settings.container_background_opacity }}</span></small>
+                </div>
+                <div class="form-group">
+                    <label for="footer_text">📝 Footer Metni</label>
+                    <input type="text" id="footer_text" name="footer_text" 
+                           value="{{ settings.footer_text }}" 
+                           placeholder="Örn: Sevgili {{ site_title }} Ailesi">
+                    <small style="color: #666; font-size: 0.68rem;">💡 İpucu: {site_title} yazdığınız yerde site başlığı görünecek</small>
+                </div>
+                <div class="form-group">
+                    <label for="copyright_text">©️ Telif Hakkı Metni</label>
+                    <input type="text" id="copyright_text" name="copyright_text" 
+                           value="{{ settings.copyright_text }}" 
+                           placeholder="Örn: BYT DIGITAL © 2025 - TÜM HAKLARI SAKLIDIR">
+                    <small style="color: #666; font-size: 0.68rem;">💼 Kurumsal telif hakkı metni</small>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn">
+                        💾 Ayarları Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_photos }}</div>
+                <div class="stat-label">📸 Toplam Fotoğraf</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_size_mb }} MB</div>
+                <div class="stat-label">💾 Toplam Boyut</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_uploaders }}</div>
+                <div class="stat-label">👥 Yükleyici Sayısı</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <h3>📋 İşlemler</h3>
+            {% if total_photos > 0 %}
+                <a href="{{ url_for('download_all') }}" class="btn btn-success">
+                    📦 Tüm Fotoğrafları ZIP İndir
+                </a>
+            {% endif %}
+            <a href="{{ url_for('generate_qr') }}" class="btn btn-info">
+                📱 QR Kod İndir
+            </a>
+            <a href="{{ url_for('upload_form') }}" class="btn">
+                🏠 Ana Sayfaya Dön
+            </a>
+        </div>
+
+        <div class="uploaders-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3>👥 Yükleyenlere Göre Fotoğraflar</h3>
+                <div class="expand-all-btn">
+                    <button class="btn btn-small" onclick="toggleAllFolders()">
+                        📁 Tümünü Aç/Kapat
+                    </button>
+                </div>
+            </div>
+
+            {% if grouped_photos %}
+                {% for uploader, photos in grouped_photos.items() %}
+                    {% set stats = uploader_stats[uploader] %}
+                    <div class="uploader-folder">
+                        <div class="folder-header" onclick="toggleFolder('{{ uploader|replace("'", "\'") }}')">
+                            <div class="folder-info">
+                                <span class="folder-icon">📁</span>
+                                <div>
+                                    <strong>👤 {{ uploader }}</strong>
+                                    <div class="folder-stats">
+                                        <div class="folder-stat">
+                                            <span>📸</span>
+                                            <span>{{ stats.count }} fotoğraf</span>
+                                        </div>
+                                        <div class="folder-stat">
+                                            <span>💾</span>
+                                            <span>{{ "%.1f"|format(stats.size / 1024 / 1024) }} MB</span>
+                                        </div>
+                                        <div class="folder-stat">
+                                            <span>🕒</span>
+                                            <span>{{ stats.latest[:19] if stats.latest else 'Bilinmiyor' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="folder-actions" onclick="event.stopPropagation()">
+                                <a href="{{ url_for('download_uploader_photos', uploader_name=uploader) }}" 
+                                   class="btn btn-warning btn-small">
+                                    📥 İndir
+                                </a>
+                            </div>
+                        </div>
+                        <div class="folder-content" id="folder-{{ uploader|replace(' ', '_')|replace('/', '_') }}">
+                            <table class="photos-table">
+                                <thead>
+                                    <tr>
+                                        <th>📁 Dosya Adı</th>
+                                        <th>📅 Yükleme Tarihi</th>
+                                        <th>💾 Boyut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for photo in photos %}
+                                    <tr>
+                                        <td>{{ photo.original_filename }}</td>
+                                        <td>{{ photo.upload_time }}</td>
+                                        <td>{{ "%.2f"|format(photo.file_size / 1024 / 1024) }} MB</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📷</div>
+                    <h3>Henüz fotoğraf yüklenmemiş</h3>
+                    <p>QR kodu paylaşarak misafirlerin fotoğraf yüklemesini sağlayın.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function toggleFolder(uploaderName) {
+            const safeName = uploaderName.replace(/\s/g, '_').replace(/\//g, '_');
+            const content = document.getElementById('folder-' + safeName);
+            const header = content.previousElementSibling;
+
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                header.classList.remove('active');
+            } else {
+                content.classList.add('expanded');
+                header.classList.add('active');
+            }
+        }
+
+        function toggleAllFolders() {
+            const allContents = document.querySelectorAll('.folder-content');
+            const allHeaders = document.querySelectorAll('.folder-header');
+
+            // Check if any folder is open
+            const hasExpanded = Array.from(allContents).some(content => 
+                content.classList.contains('expanded')
+            );
+
+            // If any is open, close all. Otherwise, open all.
+            allContents.forEach((content, index) => {
+                const header = allHeaders[index];
+                if (hasExpanded) {
+                    content.classList.remove('expanded');
+                    header.classList.remove('active');
+                } else {
+                    content.classList.add('expanded');
+                    header.classList.add('active');
+                }
+            });
+        }
+
+        // Auto-close folders when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.uploader-folder')) {
+                // Optional: Close all folders when clicking outside
+                // Uncomment the next lines if you want this behavior
+                /*
+                document.querySelectorAll('.folder-content.expanded').forEach(content => {
+                    content.classList.remove('expanded');
+                    content.previousElementSibling.classList.remove('active');
+                });
+                */
+            }
+        });
+    </script>
+</body>
+</html>

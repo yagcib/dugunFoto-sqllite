@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Seda & Bayram - Düğün Fotoğrafları</title>
+    <!-- Google Fonts - El Yazısı Fontları -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            min-height: 100vh;
+        }
+
+        body {
+            font-family: 'Caveat', 'Dancing Script', cursive;
+            background: transparent;
+            padding: 10px;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 15px;
+            min-height: 100vh;
+            font-size: 16px; /* El yazısı fontları için biraz daha büyük */
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-image: url("/static/background_707e4293-c67e-446f-9415-7e43f06f00d5.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.7;
+        }
+
+        .container {
+            max-width: 720px;
+            width: 100%;
+            min-height: auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            position: relative;
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url("/static/container_bg_29e4b424-b269-4fc1-a353-ed9bdf9567ff.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            border-radius: 20px;
+        }
+
+        .header {
+            background: transparent;
+            color: white;
+            padding: 20px 25px;
+            text-align: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem; /* El yazısı için daha büyük */
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-family: 'Caveat', cursive;
+            font-size: 1.1rem;
+            opacity: 0.95;
+            white-space: pre-line;
+            line-height: 1.4;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8), 1px 1px 3px rgba(0, 0, 0, 0.9);
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .form-container {
+            padding: 20px 30px 15px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-content {
+            flex: 1;
+            padding-right: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            flex-shrink: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+            font-family: 'Kalam', cursive;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            font-family: 'Caveat', cursive;
+            font-weight: 500;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .file-upload-area {
+            border: 3px dashed #ccc;
+            border-radius: 12px;
+            padding: 18px 14px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            max-width: 260px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 160px;
+        }
+
+        .file-upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-radius: 15px;
+            z-index: -1;
+        }
+
+        .file-upload-area:hover {
+            border-color: #667eea;
+            background: rgba(240, 242, 255, 0.9);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .file-upload-area.dragover {
+            border-color: #667eea;
+            background: rgba(240, 242, 255, 0.9);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            color: #667eea;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .upload-text {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 600;
+            line-height: 1.3;
+            font-family: 'Kalam', cursive;
+        }
+
+        .upload-subtext {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+            opacity: 0.8;
+            line-height: 1.2;
+            font-family: 'Caveat', cursive;
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 36px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 16px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            font-family: 'Kalam', cursive;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn:disabled::before {
+            display: none;
+        }
+
+        .progress-container {
+            margin-top: 18px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 18px;
+            background: #e0e0e0;
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+            font-family: 'Caveat', cursive;
+        }
+
+        .selected-files {
+            margin-top: 18px;
+            padding: 18px;
+            background: rgba(248, 249, 250, 0.9);
+            border-radius: 10px;
+            display: none;
+            border: 1px solid #e9ecef;
+            font-size: 0.95rem;
+            font-family: 'Caveat', cursive;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .success-message, .error-message {
+            padding: 14px;
+            border-radius: 10px;
+            margin-top: 18px;
+            display: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'Kalam', cursive;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 18px;
+            color: #666;
+            font-size: 0.85rem;
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Desktop uyumluluğu için media queries */
+        @media (min-width: 768px) {
+            body {
+                padding-top: 25px;
+                font-size: 18px;
+            }
+
+            .header h1 {
+                font-size: 2.8rem;
+            }
+
+            .header p {
+                font-size: 1.3rem;
+            }
+
+            .file-upload-area {
+                max-width: 300px;
+                min-height: 200px;
+                padding: 24px 18px;
+            }
+
+            .upload-icon {
+                font-size: 3.2rem;
+            }
+
+            .upload-text {
+                font-size: 1.2rem;
+            }
+
+            .upload-subtext {
+                font-size: 1rem;
+            }
+
+            label {
+                font-size: 1.25rem;
+            }
+
+            input[type="text"] {
+                font-size: 1.1rem;
+                padding: 16px 18px;
+            }
+
+            .btn {
+                font-size: 1.3rem;
+                padding: 18px 40px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            body {
+                padding: 5px;
+                padding-top: 12px;
+                font-size: 15px;
+            }
+
+            .container {
+                border-radius: 15px;
+                margin-bottom: 12px;
+            }
+
+            .container::before {
+                border-radius: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .header {
+                padding: 15px 15px;
+            }
+
+            .form-container {
+                padding: 15px 18px 10px 18px;
+            }
+
+            .file-upload-area {
+                padding: 15px 10px;
+                max-width: 200px;
+                min-height: 140px;
+                aspect-ratio: 1;
+            }
+
+            .upload-icon {
+                font-size: 2rem;
+            }
+
+            .upload-text {
+                font-size: 0.9rem;
+            }
+
+            .upload-subtext {
+                font-size: 0.75rem;
+            }
+
+            label {
+                font-size: 1rem;
+            }
+
+            input[type="text"] {
+                font-size: 0.95rem;
+                padding: 12px 14px;
+            }
+
+            .btn {
+                font-size: 1.1rem;
+                padding: 14px 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1> Seda & Bayram</h1>
+            <p>25.07.2025
+ANI PAYLAŞ
+💐Katıldığınız ve Paylaştığınız İçin Teşekkür Ederiz 💐</p>
+        </div>
+
+        <div class="form-container">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="form-content">
+                    <div class="form-group">
+                        <label for="uploaderName">📝 Adınız (İsteğe bağlı)</label>
+                        <input type="text" id="uploaderName" name="uploader_name" placeholder="Adınızı yazın...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📸 Fotoğrafları Seçin</label>
+                        <div class="file-upload-area" onclick="document.getElementById('photoInput').click()">
+                            <div class="upload-icon">📷</div>
+                            <div class="upload-text">Fotoğrafları yüklemek için tıklayın</div>
+                            <div class="upload-subtext">veya dosyaları buraya sürükleyip bırakın</div>
+                            <div class="upload-subtext">JPG, PNG, HEIC, WebP desteklenir</div>
+                        </div>
+                        <input type="file" id="photoInput" name="photos" multiple accept="image/*">
+                    </div>
+
+                    <button type="submit" class="btn" id="uploadBtn">
+                        🚀 Fotoğrafları Yükle
+                    </button>
+
+                    <div class="selected-files" id="selectedFiles"></div>
+
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">Yükleniyor...</div>
+                    </div>
+
+                    <div class="success-message" id="successMessage"></div>
+                    <div class="error-message" id="errorMessage"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7; font-weight: 600;">BYT DIGITAL © 2025 - TÜM HAKLARI SAKLIDIR</p>
+        </div>
+    </div>
+
+    <script>
+        const photoInput = document.getElementById('photoInput');
+        const selectedFiles = document.getElementById('selectedFiles');
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const fileUploadArea = document.querySelector('.file-upload-area');
+
+        let selectedFilesList = [];
+
+        // Drag and Drop
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleFileSelection(files);
+        });
+
+        photoInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFileSelection(files);
+        });
+
+        function handleFileSelection(files) {
+            selectedFilesList = files.filter(file => file.type.startsWith('image/'));
+            displaySelectedFiles();
+        }
+
+        function displaySelectedFiles() {
+            if (selectedFilesList.length === 0) {
+                selectedFiles.style.display = 'none';
+                return;
+            }
+
+            selectedFiles.style.display = 'block';
+            const totalSize = selectedFilesList.reduce((sum, file) => sum + file.size, 0);
+            const totalSizeMB = (totalSize / 1024 / 1024).toFixed(2);
+
+            selectedFiles.innerHTML = `
+                📁 ${selectedFilesList.length} fotoğraf seçildi (Toplam: ${totalSizeMB} MB)
+            `;
+        }
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (selectedFilesList.length === 0) {
+                showError('Lütfen en az bir fotoğraf seçin.');
+                return;
+            }
+
+            const formData = new FormData();
+            const uploaderName = document.getElementById('uploaderName').value || 'Anonim';
+
+            formData.append('uploader_name', uploaderName);
+            selectedFilesList.forEach(file => {
+                formData.append('photos', file);
+            });
+
+            uploadBtn.disabled = true;
+            progressContainer.style.display = 'block';
+            hideMessages();
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showSuccess(`✅ ${result.uploaded_count} fotoğraf başarıyla yüklendi!`);
+                    uploadForm.reset();
+                    selectedFilesList = [];
+                    displaySelectedFiles();
+                } else {
+                    showError(result.error || 'Yükleme sırasında hata oluştu.');
+                }
+            } catch (error) {
+                showError('Ağ hatası oluştu. Lütfen tekrar deneyin.');
+            } finally {
+                uploadBtn.disabled = false;
+                progressContainer.style.display = 'none';
+                progressFill.style.width = '0%';
+            }
+        });
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function hideMessages() {
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
